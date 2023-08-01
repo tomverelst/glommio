@@ -580,6 +580,7 @@ impl DmaStreamReader {
 
         match state.get_cached_buffer(&buffer_id).cloned() {
             None => {
+                println!("buffer {} not cached", buffer_id);
                 if state.add_waker(buffer_id, cx.waker().clone()) {
                     state.fill_buffer(self.state.clone(), self.file.clone());
                 }
