@@ -322,6 +322,7 @@ impl DmaFile {
     /// The position must be aligned to for Direct I/O. In most platforms
     /// that means 512 bytes.
     pub async fn read_at_aligned(&self, pos: u64, size: usize) -> Result<ReadResult> {
+        println!("read dma");
         let source = self.file.reactor.upgrade().unwrap().read_dma(
             self.as_raw_fd(),
             pos,
@@ -329,7 +330,10 @@ impl DmaFile {
             self.pollable,
             self.file.scheduler.borrow().as_ref(),
         );
+
+        println("source: {:?}", source);
         let read_size = enhanced_try!(source.collect_rw().await, "Reading", self.file)?;
+        println("read size {:?}", read_size);
         Ok(ReadResult::from_sliced_buffer(source, 0, read_size))
     }
 

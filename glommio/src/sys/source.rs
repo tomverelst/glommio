@@ -313,9 +313,10 @@ impl Source {
     pub(crate) async fn collect_rw(&self) -> io::Result<usize> {
         future::poll_fn(|cx| {
             if let Some(result) = self.result() {
+                println!("result is ready");
                 return Poll::Ready(result);
             }
-
+            println!("add waiter many");
             self.add_waiter_many(cx.waker().clone());
             Poll::Pending
         })
