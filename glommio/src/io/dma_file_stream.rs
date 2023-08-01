@@ -230,8 +230,7 @@ impl DmaStreamReaderState {
             futures_lite::future::yield_now().await;
 
             if read_state.borrow().error.is_some() {
-                let err = read_state.borrow().error.clone().unwrap();
-                println!("Error is {:?}", err);
+                println!("Error is {:?}", read_state.borrow().error);
                 return;
             }
 
