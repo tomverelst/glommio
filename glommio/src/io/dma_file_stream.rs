@@ -233,7 +233,7 @@ impl DmaStreamReaderState {
 
             println!("Read at aligned");
             let buffer = file.read_at_aligned(pos, len as _).await;
-            println("Buffer {:?}", buffer);
+            println!("Buffer {:?}", buffer);
 
             let mut state = read_state.borrow_mut();
             match buffer {
