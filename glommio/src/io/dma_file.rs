@@ -331,9 +331,9 @@ impl DmaFile {
             self.file.scheduler.borrow().as_ref(),
         );
 
-        println("source: {:?}", source);
+        println!("source: {:?}", source);
         let read_size = enhanced_try!(source.collect_rw().await, "Reading", self.file)?;
-        println("read size {:?}", read_size);
+        println!("read size {:?}", read_size);
         Ok(ReadResult::from_sliced_buffer(source, 0, read_size))
     }
 

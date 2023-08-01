@@ -306,7 +306,7 @@ impl Source {
         self.inner.borrow().raw
     }
 
-    pub(crate) fn stats_collection(&self) -> Option<StatsCollection> {
+    pub(crate) fn stats_collection(&self) -> Option<Sta tsCollection> {
         self.inner.borrow().stats_collection
     }
 
