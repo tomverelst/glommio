@@ -209,6 +209,7 @@ impl DmaStreamReaderState {
     }
 
     fn fill_buffer(&mut self, read_state: Rc<RefCell<Self>>, file: Rc<DmaFile>) {
+        println!("Filling buffer");
         let pos = self.buffer_read_ahead_current_pos;
         let buffer_id = self.buffer_id(pos);
 
@@ -221,13 +222,18 @@ impl DmaStreamReaderState {
             return;
         }
 
+        println!("Spawning local...)");
         let pending = crate::spawn_local(async move {
+            println!("Awaiting yield");
             futures_lite::future::yield_now().await;
 
             if read_state.borrow().error.is_some() {
                 return;
             }
+
+            println!("Read at aligned");
             let buffer = file.read_at_aligned(pos, len as _).await;
+            println("Buffer {:?}", buffer);
 
             let mut state = read_state.borrow_mut();
             match buffer {
