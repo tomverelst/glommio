@@ -203,9 +203,11 @@ impl DmaStreamReaderState {
     }
 
     fn replenish_read_ahead(&mut self, state: Rc<RefCell<Self>>, file: Rc<DmaFile>) {
+        println!("Replenishing read ahead...");
         for _ in self.buffermap.len() + self.pending.len()..self.read_ahead {
             self.fill_buffer(state.clone(), file.clone());
         }
+        println!("Replenished read ahead!");
     }
 
     fn fill_buffer(&mut self, read_state: Rc<RefCell<Self>>, file: Rc<DmaFile>) {
