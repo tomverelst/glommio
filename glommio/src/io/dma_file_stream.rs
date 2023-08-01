@@ -205,6 +205,7 @@ impl DmaStreamReaderState {
     fn replenish_read_ahead(&mut self, state: Rc<RefCell<Self>>, file: Rc<DmaFile>) {
         println!("Replenishing read ahead...");
         for _ in self.buffermap.len() + self.pending.len()..self.read_ahead {
+            println!("Replenishing...");
             self.fill_buffer(state.clone(), file.clone());
         }
         println!("Replenished read ahead!");
@@ -224,10 +225,11 @@ impl DmaStreamReaderState {
             return;
         }
 
-        println!("Spawning local...)");
+        println!("Spawning local...");
         let pending = crate::spawn_local(async move {
             println!("Awaiting yield");
             futures_lite::future::yield_now().await;
+            println!("Yield ended");
 
             if read_state.borrow().error.is_some() {
                 println!("Error is {:?}", read_state.borrow().error);
