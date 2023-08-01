@@ -233,18 +233,24 @@ impl Source {
     }
 
     pub(crate) fn result(&self) -> Option<io::Result<usize>> {
+        println!("result");
         let mut inner = self.inner.borrow_mut();
         let ret = inner
             .wakers
             .result
             .as_ref()
             .map(|x| OsResult::from(x).into());
+
+        println!("ret: {:?}", ret);
+
         if ret.is_none() {
+            println!("return ret");
             return ret;
         }
 
         // if there is a scheduler latency collection function present, invoke it once
         if let Some(Some(stat_fn)) = inner.stats_collection.as_ref().map(|x| x.latency) {
+            println!("stat_fn");
             if let Some(lat) = inner.wakers.timestamps() {
                 drop(inner);
                 let pre_lat = lat.submitted_at - lat.queued_at;
